@@ -41,6 +41,8 @@ defmodule Agala.Provider.Telegram do
     |> Keyword.put(:proxy_auth, {proxy_user, proxy_password})
   end
 
+  use Agala.Provider.Telegram.Responser
+
   defmacro __using__(:handler) do
     quote location: :keep do
       import Agala.Provider.Telegram.Helpers

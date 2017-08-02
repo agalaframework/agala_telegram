@@ -92,7 +92,7 @@ defmodule Agala.Provider.Telegram.Receiver do
   defp process_message(message, bot_params) do
     # Cast received message to handle bank, there the message
     # will be proceeded throw handlers pipe
-    Agala.Bot.PollHandler.cast_to_handle(
+    Agala.Bot.Handler.cast_to_handle(
       message,
       bot_params
     )
