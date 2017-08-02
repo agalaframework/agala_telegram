@@ -17,14 +17,14 @@ defmodule Agala.Provider.Telegram do
   end
   defp set_timeout(http_opts, bot_params, module) do
     source = case module do
-      :poller -> :poll_timeout
+      :receiver -> :poll_timeout
       :responser -> :response_timeout
     end
     http_opts
     |> Keyword.put(:recv_timeout, get_in(bot_params, [:provider_params, source]) || 5000)
     |> Keyword.put(:timeout, get_in(bot_params, [:provider_params, :timeout]) || 8000)
   end
-  # Populates HTTPoison options with proxy configuration from application config.
+  # Populates HTTPoison options with proxy configuration from bot config.
   defp set_proxy(http_opts, bot_params) do
     resolve_proxy(http_opts,
       get_in(bot_params, [:provider_params, :proxy_url]),
@@ -40,13 +40,6 @@ defmodule Agala.Provider.Telegram do
     |> Keyword.put(:proxy, proxy)
     |> Keyword.put(:proxy_auth, {proxy_user, proxy_password})
   end
-
-
-  ### Responser
-  use Agala.Provider.Telegram.Responser
-
-  ### Poller
-  use Agala.Provider.Telegram.PollServer
 
   defmacro __using__(:handler) do
     quote location: :keep do
