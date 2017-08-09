@@ -7,13 +7,13 @@ defmodule Agala.Provider.Telegram do
   end
 
   def init(bot_params, module) do
-    Map.put(bot_params, :private, %{
+    {:ok, Map.put(bot_params, :private, %{
       http_opts: Keyword.new
                  |> set_proxy(bot_params)
                  |> set_timeout(bot_params, module),
       offset: 0,
       timeout: get_in(bot_params, [:provider_params, :poll_timeout])
-    })
+    })}
   end
   defp set_timeout(http_opts, bot_params, module) do
     source = case module do
