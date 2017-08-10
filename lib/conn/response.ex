@@ -1,6 +1,6 @@
 defmodule Agala.Provider.Telegram.Conn.Response do
   defstruct [
-    method: :noaction,
+    method: nil,
     payload: %{},
     opts: []
   ]

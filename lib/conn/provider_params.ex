@@ -1,14 +1,16 @@
 defmodule Agala.Provider.Telegram.Conn.ProviderParams do
   defstruct [
     token: nil,
-    poll_timeout: nil,
-    response_timeout: nil,
+    poll_timeout: nil,     #timeout for poller to receive data - infinity
+    response_timeout: nil, #timeout for responser to receive response - normal
+    hackney_opts: Keyword.new
   ]
 
   @type t :: %Agala.Provider.Telegram.Conn.ProviderParams{
     token: String.t,
     poll_timeout: integer | :infinity,
     response_timeout: integer | :infinity,
+    hackney_opts: Keyword.t
   }
 
   @behaviour Access
