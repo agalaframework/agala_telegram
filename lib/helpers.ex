@@ -10,8 +10,7 @@ defmodule Agala.Provider.Telegram.Helpers do
   end
 
   def send_message(conn, name, chat_id, message, opts \\ []) do
-    Map.put(conn, :response, %Agala.Response{
-      name: name,
+    Map.put(conn, :response, %Agala.Provider.Telegram.Conn.Response{
       method: :post,
       payload: %{
         url: base_url("/sendMessage"),
@@ -19,5 +18,6 @@ defmodule Agala.Provider.Telegram.Helpers do
         headers: [{"Content-Type", "application/json"}]
       }
     })
+    |> Map.put(:responser_name, name)
   end
 end

@@ -1,4 +1,4 @@
-%{"agala": {:git, "https://github.com/agalaframework/agala.git", "4950766104b1d0a5f3cdf4db024e12a2cb6763d8", [branch: "develop"]},
+%{"agala": {:git, "https://github.com/agalaframework/agala.git", "c5fd3b0c3c4bb1bfb68d4b92e093b31f9920313d", [branch: "develop"]},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [], [], "hexpm"},
   "certifi": {:hex, :certifi, "2.0.0", "a0c0e475107135f76b8c1d5bc7efb33cd3815cb3cf3dea7aefdd174dabead064", [], [], "hexpm"},
   "credo": {:hex, :credo, "0.8.5", "3002d41c8a9452bd69cb1c217a6e17bf6fd9d8549932fe9f99a51646587c2a65", [], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}], "hexpm"},
