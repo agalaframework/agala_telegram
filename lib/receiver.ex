@@ -2,7 +2,7 @@ defmodule Agala.Provider.Telegram.Receiver do
   @moduledoc """
   Main worker module
   """
-  use Agala.Bot.PollServer
+  use Agala.Bot.Receiver
   alias Agala.BotParams
 
   defp get_updates_url(%BotParams{provider_params: %{token: token}}) do
@@ -92,7 +92,7 @@ defmodule Agala.Provider.Telegram.Receiver do
   defp process_message(message, bot_params) do
     # Cast received message to handle bank, there the message
     # will be proceeded throw handlers pipe
-    Agala.Bot.Handler.cast_to_handle(
+    Agala.Bot.Handler.cast_to_chain(
       message,
       bot_params
     )
