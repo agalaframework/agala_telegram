@@ -9,7 +9,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.merge(map, Enum.into(opts, %{}), fn _, v1, _ -> v1 end)
   end
 
-  def send_message(conn, name, chat_id, message, opts \\ []) do
+  def send_message(conn, chat_id, message, opts \\ []) do
     Map.put(conn, :response, %Agala.Provider.Telegram.Conn.Response{
       method: :post,
       payload: %{
@@ -18,6 +18,5 @@ defmodule Agala.Provider.Telegram.Helpers do
         headers: [{"Content-Type", "application/json"}]
       }
     })
-    |> Map.put(:responser_name, name)
   end
 end

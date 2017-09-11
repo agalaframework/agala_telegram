@@ -15,7 +15,7 @@ defmodule Agala.Provider.Telegram.Receiver do
 
   defp get_updates_options(%BotParams{private: %{http_opts: http_opts}}), do: http_opts
 
-  def get_updates(bot_params = %BotParams{}) do
+  def get_updates(notify_with, bot_params = %BotParams{}) do
     HTTPoison.post(
       get_updates_url(bot_params),            # url
       get_updates_body(bot_params),           # body
@@ -23,7 +23,7 @@ defmodule Agala.Provider.Telegram.Receiver do
       get_updates_options(bot_params)         # opts
     )
     |> parse_body
-    |> resolve_updates(bot_params)
+    |> resolve_updates(notify_with, bot_params)
   end
 
   defp resolve_updates(
@@ -34,6 +34,7 @@ defmodule Agala.Provider.Telegram.Receiver do
         body: %{"ok" => true, "result" => []}
       }
     },
+    _,
     bot_params
   ), do: bot_params
   defp resolve_updates(
@@ -44,6 +45,7 @@ defmodule Agala.Provider.Telegram.Receiver do
         reason: :timeout
       }
     },
+    _,
     bot_params
   ) do
     # This is just failed long polling, simply restart
@@ -59,17 +61,18 @@ defmodule Agala.Provider.Telegram.Receiver do
         body: %{"ok" => true, "result" => result}
       }
     },
+    notify_with,
     bot_params
   ) do
     Logger.debug fn -> "Response body is:\n #{inspect(result)}" end
     result
-    |> process_messages(bot_params)
+    |> process_messages(notify_with, bot_params)
   end
-  defp resolve_updates({:ok, %HTTPoison.Response{status_code: status_code}}, bot_params) do
+  defp resolve_updates({:ok, %HTTPoison.Response{status_code: status_code}}, _, bot_params) do
     Logger.warn("HTTP response ended with status code #{status_code}")
     bot_params
   end
-  defp resolve_updates({:error, err}, bot_params) do
+  defp resolve_updates({:error, err}, _, bot_params) do
     Logger.warn("#{inspect err}")
     bot_params
   end
@@ -79,22 +82,13 @@ defmodule Agala.Provider.Telegram.Receiver do
   end
   defp parse_body(default), do: default
 
-  defp process_messages([message] = [%{"update_id"=>offset}], bot_params) do
-    process_message(message, bot_params)
+  defp process_messages([message] = [%{"update_id"=>offset}], notify_with, bot_params) do
+    notify_with.(message)
     #last message, so the offset is moving to +1
     put_in(bot_params, [:private, :offset], offset + 1)
   end
-  defp process_messages([h|t], bot_params) do
-    process_message(h, bot_params)
-    process_messages(t, bot_params)
-  end
-
-  defp process_message(message, bot_params) do
-    # Cast received message to handle bank, there the message
-    # will be proceeded throw handlers pipe
-    Agala.Bot.Handler.cast_to_chain(
-      message,
-      bot_params
-    )
+  defp process_messages([h|t], notify_with, bot_params) do
+    notify_with.(h)
+    process_messages(t, notify_with, bot_params)
   end
 end

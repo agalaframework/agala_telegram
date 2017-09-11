@@ -1,4 +1,5 @@
 defmodule Agala.Provider.Telegram do
+  use Agala.Provider
   @moduledoc """
   Module providing adapter for Telegram
   """
@@ -7,7 +8,9 @@ defmodule Agala.Provider.Telegram do
   end
 
   def init(bot_params, module) do
-    {:ok, Map.put(bot_params, :private, %{
+    {
+      :ok,
+      Map.put(bot_params, :private, %{
       http_opts: bot_params.provider_params.hackney_opts
                  |> set_timeout(bot_params, module),
       offset: 0,
@@ -22,8 +25,6 @@ defmodule Agala.Provider.Telegram do
     http_opts
     |> Keyword.put(:recv_timeout, get_in(bot_params, [:provider_params, source]) || 5000)
   end
-
-  use Agala.Provider.Telegram.Responser
 
   defmacro __using__(:handler) do
     quote location: :keep do
