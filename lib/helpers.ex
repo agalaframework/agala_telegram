@@ -19,4 +19,14 @@ defmodule Agala.Provider.Telegram.Helpers do
       }
     })
   end
+  def delete_message(conn, chat_id, message_id) do
+    Map.put(conn, :response, %Agala.Provider.Telegram.Conn.Response{
+      method: :post,
+      payload: %{
+        url: base_url("/deleteMessage"),
+        body: create_body(%{chat_id: chat_id, message_id: message_id}, []),
+        headers: [{"Content-Type", "application/json"}]
+      }
+    })
+  end
 end
