@@ -29,4 +29,14 @@ defmodule Agala.Provider.Telegram.Helpers do
       }
     })
   end
+  def kick_chat_member(conn, chat_id, user_id, opts \\ []) do
+    Map.put(conn, :response, %Agala.Provider.Telegram.Conn.Response{
+      method: :post,
+      payload: %{
+        url: base_url("/kickChatMember"),
+        body: create_body(%{chat_id: chat_id, user_id: user_id}, opts),
+        headers: [{"Content-Type", "application/json"}]
+      }
+    })
+  end
 end

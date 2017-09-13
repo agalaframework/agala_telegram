@@ -20,7 +20,7 @@ defmodule Agala.Provider.Telegram.Responser do
       Map.get(conn.response.payload, :headers, []),
       Map.get(conn.response.payload, :http_opts) || Map.get(bot_params.private, :http_opts) || []
     ) do
-      {:ok, response=%HTTPoison.Response{body: body}} -> body |> Poison.decode!
+      {:ok, %HTTPoison.Response{body: body}} -> body |> Poison.decode!
       another -> another
     end
   end
