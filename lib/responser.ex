@@ -13,12 +13,15 @@ defmodule Agala.Provider.Telegram.Responser do
   Main entry point method. Process the response
   """
   def response(conn, bot_params) do
-    HTTPoison.request(
+    case HTTPoison.request(
       conn.response.method,
       create_url(conn, bot_params),
       create_body(conn),
       Map.get(conn.response.payload, :headers, []),
       Map.get(conn.response.payload, :http_opts) || Map.get(bot_params.private, :http_opts) || []
-    )
+    ) do
+      {:ok, response=%HTTPoison.Response{body: body}} -> body |> Poison.decode!
+      another -> another
+    end
   end
 end
