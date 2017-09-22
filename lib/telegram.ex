@@ -31,4 +31,11 @@ defmodule Agala.Provider.Telegram do
       import Agala.Provider.Telegram.Helpers
     end
   end
+
+  #TODO: Check params
+  def check_params(bot_params) do
+  end
+  def check_params(_), do
+    {:error, :wrong_params_struct}
+  end
 end
