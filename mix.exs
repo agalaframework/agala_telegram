@@ -4,7 +4,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
   def project do
     [
       app: :agala_telegram,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       description: description(),
@@ -23,7 +23,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:agala, "~> 2.0.1"},
+      {:agala, "~> 2.0.2"},
       {:httpoison, "~> 0.12"},
       {:poison, "~> 3.1"},
       {:ex_doc, "~> 0.16", only: :dev},
