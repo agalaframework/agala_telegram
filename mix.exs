@@ -21,7 +21,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:agala, "~> 2.0.0-rc2"},
+      {:agala, github: "agalaframework/agala", branch: "release/2.0.0"},
       {:httpoison, "~> 0.12"},
       {:poison, "~> 3.1"},
       {:ex_doc, "~> 0.16", only: :dev},
