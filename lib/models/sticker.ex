@@ -8,7 +8,7 @@ defmodule Agala.Provider.Telegram.Model.Sticker do
   use Construct
 
   structure do
-    field :filed_id, :string
+    field :file_id, :string
     field :width, :integer
     field :height, :integer
     field :thumb, PhotoSize, default: nil
