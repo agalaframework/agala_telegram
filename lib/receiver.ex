@@ -22,10 +22,11 @@ defmodule Agala.Provider.Telegram.Receiver do
       [{"Content-Type", "application/json"}], # headers
       get_updates_options(bot_params)         # opts
     )
-    |> parse_body
+    |> parse_body()
     |> resolve_updates(notify_with, bot_params)
   end
 
+  # Empty array of new messages
   defp resolve_updates(
     {
       :ok,
@@ -37,6 +38,8 @@ defmodule Agala.Provider.Telegram.Receiver do
     _,
     bot_params
   ), do: bot_params
+
+  # This is just failed long polling, simply restart
   defp resolve_updates(
     {
       :error,
@@ -48,11 +51,11 @@ defmodule Agala.Provider.Telegram.Receiver do
     _,
     bot_params
   ) do
-    # This is just failed long polling, simply restart
     Logger.debug("Long polling request ended with timeout, resend to poll")
     bot_params
   end
 
+  # Good variant - acceptable results
   defp resolve_updates(
     {
       :ok,
@@ -68,10 +71,12 @@ defmodule Agala.Provider.Telegram.Receiver do
     result
     |> process_messages(notify_with, bot_params)
   end
+  # HTTP protocol error - resending LongPolling request
   defp resolve_updates({:ok, %HTTPoison.Response{status_code: status_code}}, _, bot_params) do
     Logger.warn("HTTP response ended with status code #{status_code}")
     bot_params
   end
+  # HTTPoison error - resending LongPolling request
   defp resolve_updates({:error, err}, _, bot_params) do
     Logger.warn("#{inspect err}")
     bot_params
@@ -82,11 +87,12 @@ defmodule Agala.Provider.Telegram.Receiver do
   end
   defp parse_body(default), do: default
 
+  # Last message - updating offset with this message offset + 1
   defp process_messages([message] = [%{"update_id"=>offset}], notify_with, bot_params) do
     notify_with.(message)
-    #last message, so the offset is moving to +1
     put_in(bot_params, [:private, :offset], offset + 1)
   end
+  # Not last messages - simply passing to notify_with function
   defp process_messages([h|t], notify_with, bot_params) do
     notify_with.(h)
     process_messages(t, notify_with, bot_params)
