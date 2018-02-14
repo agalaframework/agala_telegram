@@ -1,7 +1,7 @@
 defmodule Agala.Provider.Telegram.Responser do
   use Agala.Bot.Responser
 
-  defp create_body(%Agala.Conn{response: %{payload: %{body: body}}}) when is_bitstring(body), do: body
+  defp create_body(%Agala.Conn{response: %{payload: %{body: body}}}) when is_bitstring(body) or is_tuple(body), do: body
   defp create_body(%Agala.Conn{response: %{payload: %{body: body}}}) when is_map(body), do: body |> Poison.encode!
   defp create_body(_), do: ""
 
@@ -25,3 +25,4 @@ defmodule Agala.Provider.Telegram.Responser do
     end
   end
 end
+

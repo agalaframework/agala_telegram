@@ -6,8 +6,17 @@ defmodule Agala.Provider.Telegram.Helpers do
     fn token -> @base_url <> token <> route end
   end
 
-  defp create_body(map, opts) do
+  defp create_body(map, opts) when is_map(map) do
     Map.merge(map, Enum.into(opts, %{}), fn _, v1, _ -> v1 end)
+  end
+  defp create_body_multipart(map, opts) when is_map(map) do
+    multipart =
+      create_body(map, opts)
+      |> Enum.map(fn
+        {key, {:file, file}} -> {:file, file, {"form-data", [{:name, key}, {:filename, Path.basename(file)}]}, []}
+        {key, value} -> {to_string(key), to_string(value)}
+      end)
+    {:multipart, multipart}
   end
 
   @spec send_message(conn :: Agala.Conn.t, message :: String.t, opts :: Enum.t) :: Agala.Conn.t
@@ -33,6 +42,19 @@ defmodule Agala.Provider.Telegram.Helpers do
       }
     })
   end
+
+  @spec send_chat_action(conn :: Agala.Conn.t, chat_id :: String.t | integer, action :: String.t) :: Agala.Conn.t
+  def send_chat_action(conn, chat_id, action) do
+    Map.put(conn, :response, %Response{
+      method: :post,
+      payload: %{
+        url: base_url("/sendChatAction"),
+        body: create_body(%{chat_id: chat_id, action: action}, []),
+        headers: [{"Content-Type", "application/json"}]
+      }
+    })
+  end
+
   def kick_chat_member(conn, chat_id, user_id, opts \\ []) do
     Map.put(conn, :response, %Response{
       method: :post,
@@ -40,6 +62,28 @@ defmodule Agala.Provider.Telegram.Helpers do
         url: base_url("/kickChatMember"),
         body: create_body(%{chat_id: chat_id, user_id: user_id}, opts),
         headers: [{"Content-Type", "application/json"}]
+      }
+    })
+  end
+
+  @spec send_photo(conn :: Agala.Conn.t, chat_id :: String.t | integer, photo :: {:file, String.t}) :: Agala.Conn.t
+  def send_photo(conn, chat_id, {:file, photo}, opts \\ []) do
+    Map.put(conn, :response, %Response{
+      method: :post,
+      payload: %{
+        url: base_url("/sendPhoto"),
+        body: create_body_multipart(%{chat_id: chat_id, photo: {:file, photo}}, opts)
+      }
+    })
+  end
+
+  @spec send_document(conn :: Agala.Conn.t, chat_id :: String.t | integer, document :: {:file, String.t}) :: Agala.Conn.t
+  def send_document(conn, chat_id, {:file, document}, opts \\ []) do
+    Map.put(conn, :response, %Response{
+      method: :post,
+      payload: %{
+        url: base_url("/sendDocument"),
+        body: create_body_multipart(%{chat_id: chat_id, document: {:file, document}}, opts)
       }
     })
   end
