@@ -29,7 +29,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
       {:ex_doc, "> 0.0.0", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
       {:credo, "~> 0.8", only: [:dev, :test]},
-      {:construct, git: "https://github.com/Virviil/construct", branch: "new_features"}
+      {:construct, "~> 1.0"}
     ]
   end
 
