@@ -4,7 +4,7 @@ defmodule Agala.Provider.Telegram do
   Module providing adapter for Telegram
   """
   def base_url(conn) do
-    "https://api.telegram.org/bot" <> conn.poller_params.token
+    "https://api.telegram.org/bot" <> conn.provider_params.token
   end
 
   def init(bot_params, module) do

@@ -87,4 +87,16 @@ defmodule Agala.Provider.Telegram.Helpers do
       }
     })
   end
+
+  @spec get_file(conn :: Agala.Conn.t, file_id :: String.t) :: Agala.Conn.t
+  def get_file(conn, file_id) do
+    Map.put(conn, :response, %Response{
+      method: :get,
+      payload: %{
+        url: base_url("/getFile"),
+        body: create_body(%{file_id: file_id}, []),
+        headers: [{"Content-Type", "application/json"}]
+      }
+    })
+  end
 end
