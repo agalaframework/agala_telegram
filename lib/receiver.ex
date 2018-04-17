@@ -5,8 +5,8 @@ defmodule Agala.Provider.Telegram.Receiver do
   use Agala.Bot.Receiver
   alias Agala.BotParams
 
-  defp get_updates_url(%BotParams{provider_params: %{token: token}}) do
-    "https://api.telegram.org/bot" <> token <> "/getUpdates"
+  defp get_updates_url(%BotParams{provider_params: %{token: token, host: host}}) do
+    "https://" <> host <> "/bot" <> token <> "/getUpdates"
   end
 
   defp get_updates_body(%BotParams{private: %{offset: offset, timeout: timeout}}) do

@@ -4,11 +4,11 @@ defmodule Agala.Provider.Telegram do
   Module providing adapter for Telegram
   """
   def base_url(conn) do
-    "https://api.telegram.org/bot" <> conn.request_bot_params.provider_params.token
+    "https://" <> conn.request_bot_params.provider_params.host <> "/bot" <> conn.request_bot_params.provider_params.token
   end
 
   def base_file_url(conn) do
-    "https://api.telegram.org/file/bot" <> conn.request_bot_params.provider_params.token
+    "https://" <> conn.request_bot_params.provider_params.host <> "/file/bot" <> conn.request_bot_params.provider_params.token
   end
 
   def init(bot_params, module) do

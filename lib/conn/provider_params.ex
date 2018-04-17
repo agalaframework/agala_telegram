@@ -15,7 +15,8 @@ defmodule Agala.Provider.Telegram.Conn.ProviderParams do
     token: nil,
     poll_timeout: nil,     #timeout for poller to receive data - infinity
     response_timeout: nil, #timeout for responser to receive response - normal
-    hackney_opts: Keyword.new
+    hackney_opts: Keyword.new,
+    host: nil
   ]
 
   @typedoc """
@@ -36,7 +37,8 @@ defmodule Agala.Provider.Telegram.Conn.ProviderParams do
     token: String.t,
     poll_timeout: integer | :infinity,
     response_timeout: integer | :infinity,
-    hackney_opts: Keyword.t
+    hackney_opts: Keyword.t,
+    host: String.t
   }
 
   @behaviour Access
