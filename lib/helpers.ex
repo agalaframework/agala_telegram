@@ -5,10 +5,6 @@ defmodule Agala.Provider.Telegram.Helpers do
     "https://" <> params.host <> params.token
   end
 
-  defp base_url(conn) do
-    "https://" <> (conn.request_bot_params.provider_params.host) <> "/bot"
-  end
-
   defp base_url(route, _conn) do
     fn params ->
       "https://" <> params.host <> "/bot" <> params.token <> route
