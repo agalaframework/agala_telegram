@@ -1,5 +1,5 @@
 # AgalaTelegram
-Full featured framework for writing telegram bots in Elixir. 
+Full-featured framework for writing telegram bots in Elixir. 
 
 # Example application
 Link to [repository](https://github.com/CarefreeSlacker/sandbox) simple CLI application for receiving and sending messages to telegram bot
@@ -8,22 +8,22 @@ Just:
 1. `git clone https://github.com/CarefreeSlacker/sandbox`
 2. `cd sandbox`
 3. Create your bot by @BotFather
-4. Add it's token to sanbox/config/config.custom.exs into sandbox.agala_telegram.token
+4. Add its token to sandbox/config/config.custom.exs into sandbox.agala_telegram.token
 5. `mix deps.get`
 6. `iex -S mix`
 7. ?????
 8. PROFIT!
 
 Now you can send and receive messages from created Telegram bot.
-1. Incoming messages will display in CLI in view like:    
+1. Incoming messages will be displayed in CLI like this:    
 `<User first name> <user_telegram_id> : <Message>`     
 `----> You have just received message <----`   
-2. For sending message you can use module `Sandbox.MessageSender.answer(<recepient user_telegram_id>, <Your message>)` and than you will see feedback:    
+2. For sending message you can use module `Sandbox.MessageSender.answer(<recepient user_telegram_id>, <Your message>)` and then you will see feedback:    
 `<bot_name> Bot <bot_id> : <Your message>`   
 `----> You have just sent message <----`
 
 ## Installation
-There will be described the process of adding bot step by step. Also pay attention for comments in code snippets.
+There will be described the process of creating a bot step by step. Also pay attention to comments in code snippets.
 
 1. Add to your mix.exs
 ```elixir
@@ -134,7 +134,7 @@ end
 7. Download dependencies
 `mix deps.get`
 
-That's it. Now you can receive and send messages from telegram bot.
+That's it. Now you can receive and send messages from and to telegram bot.
 
 ### Conclusion
 For further information you can visit [documentation](https://hexdocs.pm/agala_telegram/api-reference.html) page in hexdocs.pm
