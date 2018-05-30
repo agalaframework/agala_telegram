@@ -6,7 +6,7 @@ defmodule Agala.Provider.Telegram.Responser do
   defp create_body(_), do: ""
 
   defp create_url(%Agala.Conn{response: %{payload: %{url: url}}}, bot_params) when is_function(url) do
-    url.(bot_params.provider_params.token)
+    url.(bot_params.provider_params)
   end
 
   @doc """
@@ -25,4 +25,3 @@ defmodule Agala.Provider.Telegram.Responser do
     end
   end
 end
-

@@ -1,14 +1,24 @@
 defmodule Agala.Provider.Telegram.Helpers do
   alias Agala.Provider.Telegram.Conn.Response
-  @base_url "https://api.telegram.org/bot"
 
-  defp base_url(route) do
-    fn token -> @base_url <> token <> route end
+  defp base_url(%Agala.Provider.Telegram.Conn.ProviderParams{} = params) do
+    "https://" <> params.host <> params.token
+  end
+
+  defp base_url(conn) do
+    "https://" <> (conn.request_bot_params.provider_params.host) <> "/bot"
+  end
+
+  defp base_url(route, _conn) do
+    fn params ->
+      "https://" <> params.host <> "/bot" <> params.token <> route
+    end
   end
 
   defp create_body(map, opts) when is_map(map) do
     Map.merge(map, Enum.into(opts, %{}), fn _, v1, _ -> v1 end)
   end
+
   defp create_body_multipart(map, opts) when is_map(map) do
     multipart =
       create_body(map, opts)
@@ -24,7 +34,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :post,
       payload: %{
-        url: base_url("/sendMessage"),
+        url: base_url("/sendMessage", conn),
         body: create_body(%{chat_id: chat_id, text: message}, opts),
         headers: [{"Content-Type", "application/json"}]
       }
@@ -36,7 +46,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :post,
       payload: %{
-        url: base_url("/deleteMessage"),
+        url: base_url("/deleteMessage", conn),
         body: create_body(%{chat_id: chat_id, message_id: message_id}, []),
         headers: [{"Content-Type", "application/json"}]
       }
@@ -48,7 +58,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :post,
       payload: %{
-        url: base_url("/sendChatAction"),
+        url: base_url("/sendChatAction", conn),
         body: create_body(%{chat_id: chat_id, action: action}, []),
         headers: [{"Content-Type", "application/json"}]
       }
@@ -59,7 +69,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :post,
       payload: %{
-        url: base_url("/kickChatMember"),
+        url: base_url("/kickChatMember", conn),
         body: create_body(%{chat_id: chat_id, user_id: user_id}, opts),
         headers: [{"Content-Type", "application/json"}]
       }
@@ -71,7 +81,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :post,
       payload: %{
-        url: base_url("/sendPhoto"),
+        url: base_url("/sendPhoto", conn),
         body: create_body_multipart(%{chat_id: chat_id, photo: {:file, photo}}, opts)
       }
     })
@@ -82,7 +92,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :post,
       payload: %{
-        url: base_url("/sendDocument"),
+        url: base_url("/sendDocument", conn),
         body: create_body_multipart(%{chat_id: chat_id, document: {:file, document}}, opts)
       }
     })
@@ -93,7 +103,7 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.put(conn, :response, %Response{
       method: :get,
       payload: %{
-        url: base_url("/getFile"),
+        url: base_url("/getFile", conn),
         body: create_body(%{file_id: file_id}, []),
         headers: [{"Content-Type", "application/json"}]
       }
