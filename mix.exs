@@ -24,7 +24,8 @@ defmodule Agala.Provider.Telegram.Mixfile do
   defp deps do
     [
       {:agala, "~> 2.0"},
-      {:httpoison, "~> 0.12"},
+      {:httpoison, "~> 1.2"},
+      {:hackney, "~> 1.13"},
       {:poison, "~> 3.1"},
       {:ex_doc, "> 0.0.0", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
