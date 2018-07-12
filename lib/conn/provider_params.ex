@@ -13,8 +13,8 @@ defmodule Agala.Provider.Telegram.Conn.ProviderParams do
 
   defstruct [
     token: nil,
-    poll_timeout: nil,     #timeout for poller to receive data - infinity
-    response_timeout: nil, #timeout for responser to receive response - normal
+    poll_timeout: nil,     # timeout for poller to receive data - infinity
+    response_timeout: nil, # timeout for responser to receive response - normal
     hackney_opts: Keyword.new
   ]
 
