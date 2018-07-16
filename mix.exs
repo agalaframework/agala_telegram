@@ -6,6 +6,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
       app: :agala_telegram,
       version: "3.0.0",
       elixir: "~> 1.6",
+      build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       description: description(),
       package: package(),
@@ -16,7 +17,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :httpoison]
+      extra_applications: [:logger]
     ]
   end
 
