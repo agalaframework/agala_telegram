@@ -24,15 +24,14 @@ defmodule Agala.Provider.Telegram.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:agala, "~> 2.0"},
-      {:agala, path: "../agala"},
+      {:agala, "~> 3.0"},
       {:httpoison, "~> 1.2"},
       {:hackney, "~> 1.13"},
+      {:construct, "~> 1.0"},
       {:jason, "~> 1.1"},
       {:ex_doc, "> 0.0.0", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
-      {:credo, "~> 0.8", only: [:dev, :test]},
-      {:construct, "~> 1.0"}
+      {:credo, "~> 0.8", only: [:dev, :test]}
     ]
   end
 
