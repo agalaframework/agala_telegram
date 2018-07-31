@@ -1,5 +1,5 @@
 %{
-  "agala": {:hex, :agala, "2.0.2", "9a4706cafb4f371ceca503a60b317c33b78fc7e618676ffa5bffba7bcf931748", [:mix], [{:excoveralls, "~> 0.7.4", [hex: :excoveralls, repo: "hexpm", optional: false]}], "hexpm"},
+  "agala": {:git, "https://github.com/Victoria91/agala.git", "8be189addabbb2cd9f0ef762ae02571f62a1142c", [branch: "move-to-agala-2-0-5-with-plugs-for-facebook"]},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm"},
   "certifi": {:hex, :certifi, "2.3.1", "d0f424232390bf47d82da8478022301c561cf6445b5b5fb6a84d49a9e76d2639", [:rebar3], [{:parse_trans, "3.2.0", [hex: :parse_trans, repo: "hexpm", optional: false]}], "hexpm"},
   "construct": {:hex, :construct, "1.0.1", "0f1471768f0c810ab05c26e1a8e2b049f609f31bd9d503c9b86ca97c01519a20", [:mix], [], "hexpm"},
