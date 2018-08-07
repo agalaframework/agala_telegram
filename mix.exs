@@ -17,7 +17,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger, :tesla, :hackney]
     ]
   end
 
@@ -25,7 +25,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
   defp deps do
     [
       {:agala, "~> 3.0"},
-      {:httpoison, "~> 1.2"},
+      {:tesla, "~> 1.1.0"},
       {:hackney, "~> 1.13"},
       {:construct, "~> 1.0"},
       {:jason, "~> 1.1"},
