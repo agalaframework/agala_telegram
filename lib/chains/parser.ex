@@ -12,7 +12,7 @@ defmodule Agala.Provider.Telegram.Chain.Parser do
   alias Agala.Provider.Telegram.Model.Update
 
   @doc """
-  Function is used as a convention for `Agala.Chain` behaviour, but is not used yet.
+  Function is used as a convention for `Agala.Chain` behaviour, but is not used in this provider.
   Options, passed to the function will be omitted.
   """
   @spec init(opts :: Keyword.t) :: Keyword.t
