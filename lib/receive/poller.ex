@@ -14,6 +14,7 @@ defmodule Agala.Provider.Telegram.Poller do
   4. Restart cycle again
   """
   use Agala.Bot.Common.Poller
+  alias Agala.Client
 
   #######################################################################################
   ### Initialize section
@@ -45,15 +46,15 @@ defmodule Agala.Provider.Telegram.Poller do
 
   defp get_updates_options(%{private: %{http_opts: http_opts}}), do: http_opts
 
-  defp parse_body({:ok, resp = %HTTPoison.Response{body: body}}) do
-    {:ok, %HTTPoison.Response{resp | body: Jason.decode!(body)}}
+  defp parse_body({:ok, resp = %{body: body}}) do
+    {:ok, %{resp | body: Jason.decode!(body)}}
   end
 
   defp parse_body(default), do: default
 
   @spec get_updates(bot_params :: Agala.BotParams.t) :: {list(), Agala.BotParams.t()}
   def get_updates(bot_params) do
-    HTTPoison.post(
+    Client.post(
       # url
       get_updates_url(bot_params),
       # body
@@ -69,21 +70,21 @@ defmodule Agala.Provider.Telegram.Poller do
 
   # Empty array of new messages
   defp resolve_updates(
-         {:ok, %HTTPoison.Response{status_code: 200, body: %{"ok" => true, "result" => []}}},
+         {:ok, %{status_code: 200, body: %{"ok" => true, "result" => []}}},
          bot_params
        ) do
     {[], bot_params}
   end
 
   # This is just failed long polling, simply restart
-  defp resolve_updates({:error, %HTTPoison.Error{id: nil, reason: :timeout}}, bot_params) do
+  defp resolve_updates({:error, %{id: nil, reason: :timeout}}, bot_params) do
     Logger.debug("[Telegram] Long polling request ended with timeout, resend to poll")
     {[], bot_params}
   end
 
   # Good variant - acceptable results
   defp resolve_updates(
-         {:ok, %HTTPoison.Response{status_code: 200, body: %{"ok" => true, "result" => result}}},
+         {:ok, %{status_code: 200, body: %{"ok" => true, "result" => result}}},
          bot_params
        ) do
     Logger.debug(fn -> "Response body is:\n #{inspect(result)}" end)
@@ -93,12 +94,12 @@ defmodule Agala.Provider.Telegram.Poller do
   end
 
   # HTTP protocol error - resending LongPolling request
-  defp resolve_updates({:ok, %HTTPoison.Response{status_code: status_code}}, bot_params) do
+  defp resolve_updates({:ok, %{status_code: status_code}}, bot_params) do
     Logger.warn("[Telegram] HTTP response ended with status code #{status_code}")
     {[], bot_params}
   end
 
-  # HTTPoison error - resending LongPolling request
+  # error - resending LongPolling request
   defp resolve_updates({:error, err}, bot_params) do
     Logger.warn("#{inspect(err)}")
     {[], bot_params}

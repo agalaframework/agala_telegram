@@ -1,5 +1,6 @@
 defmodule Agala.Provider.Telegram.Helpers do
   alias Agala.Provider.Telegram.Conn.Response
+  alias Agala.Client
   @base_url "https://api.telegram.org/bot"
 
   defp bootstrap(bot) do
@@ -57,18 +58,12 @@ defmodule Agala.Provider.Telegram.Helpers do
          %Agala.Conn{
            responser: bot,
            response: %{method: method, payload: %{url: url, body: body} = payload}
-         } = conn
+         } = _conn
        ) do
     {:ok, bot_params} = bootstrap(bot)
 
-    case HTTPoison.request(
-      method,
-      url.(bot_params.provider_params.token),
-      body_encode(body),
-      Map.get(payload, :headers, []),
-      Map.get(payload, :http_opts) || Map.get(bot_params.private, :http_opts) || []
-    ) do
-      {:ok, %HTTPoison.Response{body: body}} -> Jason.decode(body)
+    case Client.request(method, [url.(bot_params.provider_params.token), body_encode(body), Map.get(payload, :headers, []), Map.get(payload, :http_opts) || Map.get(bot_params.private, :http_opts) || []]) do
+      {:ok, %{body: body}} -> Jason.decode(body)
       error -> error
     end
   end
