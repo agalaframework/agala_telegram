@@ -51,7 +51,7 @@ defmodule Agala.Provider.Telegram.Receiver do
     _,
     bot_params
   ) do
-    Logger.debug("Long polling request ended with timeout, resend to poll")
+    Logger.debug("[Telegram] Long polling request ended with timeout, resend to poll")
     bot_params
   end
 
@@ -73,7 +73,7 @@ defmodule Agala.Provider.Telegram.Receiver do
   end
   # HTTP protocol error - resending LongPolling request
   defp resolve_updates({:ok, %HTTPoison.Response{status_code: status_code}}, _, bot_params) do
-    Logger.warn("HTTP response ended with status code #{status_code}")
+    Logger.warn("[Telegram] HTTP response ended with status code #{status_code}")
     bot_params
   end
   # HTTPoison error - resending LongPolling request
