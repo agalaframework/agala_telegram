@@ -31,7 +31,7 @@ defmodule Agala.Provider.Telegram.Mixfile do
       {:jason, "~> 1.1"},
       {:ex_doc, "> 0.0.0", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
-      {:credo, "~> 0.8", only: [:dev, :test]}
+      {:credo, "~> 1.2", only: [:dev, :test]}
     ]
   end
 
